@@ -11,7 +11,7 @@ public class Line {
 
     private String value;
 
-    private Integer count;
+    private int count;
 
     public Line(String value) {
         this.value = value;
@@ -26,7 +26,7 @@ public class Line {
         this.value = value;
     }
 
-    public Integer getCount() {
+    public int getCount() {
         return count;
     }
 
@@ -37,5 +37,21 @@ public class Line {
     public Line(String value, Integer count) {
         this.value = value;
         this.count = count;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Line line = (Line) o;
+
+        return value != null ? value.equals(line.value) : line.value == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return value != null ? value.hashCode() : 0;
     }
 }
