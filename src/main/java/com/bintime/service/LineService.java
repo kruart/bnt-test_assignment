@@ -18,7 +18,7 @@ public interface LineService {
      * @param lines
      * @return
      */
-    List<Line> saveLine(List<Line> lines);
+    List<Line> saveLine(String[] lines);
 
     /**
      * Returns numbers of lines from store

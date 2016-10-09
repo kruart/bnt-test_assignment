@@ -5,10 +5,9 @@ import com.bintime.service.LineService;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Contain unit-tests for {@link LineServiceImpl}
@@ -26,27 +25,24 @@ public class LineServiceImplTest {
 
     @Test
     public void testSaveLine() throws Exception {
-        List<Line> linesAfterParsing = service.saveLine(populate());
+        List<Line> linesAfterParsing = service.saveLine(mockPopulate());
 
         assertEquals("xyz", linesAfterParsing.get(0).getValue());
-        assertEquals(2, linesAfterParsing.get(0).getCount());
+        assertEquals(4, linesAfterParsing.get(0).getCount());
 
         assertEquals("yyy", linesAfterParsing.get(1).getValue());
-        assertEquals(1, linesAfterParsing.get(1).getCount());
+        assertEquals(2, linesAfterParsing.get(1).getCount());
     }
 
     @Test
     public void testGetNumberOfLines() throws Exception {
         assertEquals(0, service.getNumberOfLines());
-        service.saveLine(populate());
-        assertEquals(2, service.getNumberOfLines());
+        service.saveLine(mockPopulate());
+        assertEquals(3, service.getNumberOfLines());
     }
 
-    private List<Line> populate() {
-        Line line1 = new Line("xyz");
-        Line line2 = new Line("xyz");
-        Line line3 = new Line("yyy");
+    private String[] mockPopulate() {
 
-        return Arrays.asList(line1, line2, line3);
+        return new String[]{"xyz", "xyz", "yyy", "xyz", "yyy", "smile", "xyz"};
     }
 }

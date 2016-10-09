@@ -4,7 +4,9 @@ import com.bintime.model.Line;
 import com.bintime.service.LineService;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Default implementation of the {@link LineService}
@@ -19,22 +21,21 @@ public class LineServiceImpl implements LineService {
     private List<Line> linesStore;
 
     public LineServiceImpl() {
-        linesStore = new ArrayList<>();
+        linesStore = Collections.synchronizedList(new ArrayList<>());
     }
 
     @Override
-    public List<Line> saveLine(List<Line> lines) {
-        for (Line newLine : lines) {
+    public List<Line> saveLine(String[] lines) {
+        for (String newLine : lines) {
 
-            if (!linesStore.contains(newLine)) {
-                linesStore.add(newLine);
-            }
+            Optional<Line> first = linesStore.stream()
+                    .filter(line -> line.getValue().equals(newLine))
+                    .findFirst();
 
-            for (Line line : linesStore) {
-                if (newLine.equals(line)) {
-                    line.setCount(line.getCount() + 1);
-                    break;
-                }
+            if (first.isPresent()) {
+                first.get().setCount(first.get().getCount() + 1);
+            } else {
+                linesStore.add(new Line(newLine));
             }
         }
 

@@ -15,7 +15,7 @@ public class Line {
 
     public Line(String value) {
         this.value = value;
-        this.count = 0;
+        this.count = 1;
     }
 
     public String getValue() {
