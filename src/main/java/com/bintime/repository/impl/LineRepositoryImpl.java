@@ -1,7 +1,8 @@
-package com.bintime.service.impl;
+package com.bintime.repository.impl;
 
 import com.bintime.model.Line;
-import com.bintime.service.LineService;
+import com.bintime.repository.LineRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -9,18 +10,19 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Default implementation of the {@link LineService}
+ * Default implementation of the {@link LineRepository}
  *
  * @author Krukovskiy Arthur
  *
  */
-public class LineServiceImpl implements LineService {
+@Repository
+public class LineRepositoryImpl implements LineRepository {
     /**
      * Internal list of lines
      */
     private List<Line> linesStore;
 
-    public LineServiceImpl() {
+    public LineRepositoryImpl() {
         linesStore = Collections.synchronizedList(new ArrayList<>());
     }
 

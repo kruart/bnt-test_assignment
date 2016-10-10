@@ -1,4 +1,4 @@
-package com.bintime.service;
+package com.bintime.repository;
 
 import com.bintime.model.Line;
 
@@ -10,7 +10,7 @@ import java.util.List;
  * @author Krukovskiy Arthur
  *
  */
-public interface LineService {
+public interface LineRepository {
 
     /**
      * Saves list of lines after pre-parsing and grouping identical strings

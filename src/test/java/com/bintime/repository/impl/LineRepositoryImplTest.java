@@ -1,7 +1,7 @@
-package com.bintime.service.impl;
+package com.bintime.repository.impl;
 
 import com.bintime.model.Line;
-import com.bintime.service.LineService;
+import com.bintime.repository.LineRepository;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -10,17 +10,17 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 /**
- * Contain unit-tests for {@link LineServiceImpl}
+ * Contain unit-tests for {@link LineRepositoryImpl}
  *
  * @author Krukovskiy Arthur
  *
  */
-public class LineServiceImplTest {
-    private LineService service;
+public class LineRepositoryImplTest {
+    private LineRepository service;
 
     @Before
     public void setup() {
-        service = new LineServiceImpl();
+        service = new LineRepositoryImpl();
     }
 
     @Test
