@@ -4,14 +4,15 @@ import com.bintime.model.Line;
 import com.bintime.repository.LineRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -32,21 +33,25 @@ public class LineRestController {
     /**
      * Uploads multiple files from html-form.
      *
-     * @throws Exception
+     * @param files
+     * @param attributes
+     * @return
      */
     @RequestMapping(value = "/multipleSave", method = RequestMethod.POST)
-    public void uploadFile(@RequestParam(value = "file", required = false) List<MultipartFile> files, HttpServletResponse response) throws IOException {
-        response.sendRedirect("/rest/result");
+    public RedirectView uploadFile(@RequestParam(value = "file", required = false) List<MultipartFile> files, RedirectAttributes attributes) {
+        attributes.addFlashAttribute("flashAttrs", Arrays.asList(new Line("open"), new Line("close")));
+
+        return new RedirectView("/rest/result", true);
     }
 
     /**
-     * returns the result of parsing as json
+     * Returns the result of parsing as json
      *
+     * @param model
      * @return
      */
     @RequestMapping(value = "/result", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Line> resultOfParsing() {
-        return Arrays.asList(new Line("open"), new Line("close"));
-//        return "Hello World";
+    public Object resultOfParsing(Model model) {
+        return model.asMap().get("flashAttrs");
     }
 }
