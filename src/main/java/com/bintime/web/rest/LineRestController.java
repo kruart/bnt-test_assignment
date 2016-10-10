@@ -2,6 +2,7 @@ package com.bintime.web.rest;
 
 import com.bintime.model.Line;
 import com.bintime.repository.LineRepository;
+import com.bintime.util.ParsingFileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.ui.Model;
@@ -13,7 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -38,8 +38,11 @@ public class LineRestController {
      * @return
      */
     @RequestMapping(value = "/multipleSave", method = RequestMethod.POST)
-    public RedirectView uploadFile(@RequestParam(value = "file", required = false) List<MultipartFile> files, RedirectAttributes attributes) {
-        attributes.addFlashAttribute("flashAttrs", Arrays.asList(new Line("open"), new Line("close")));
+    public RedirectView uploadFile(@RequestParam(value = "file") List<MultipartFile> files, RedirectAttributes attributes) {
+
+        List<Line> lines = repository.saveLine(ParsingFileUtils.parsing(files));
+
+        attributes.addFlashAttribute("flashAttrs", lines);
 
         return new RedirectView("/rest/result", true);
     }

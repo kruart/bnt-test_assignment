@@ -35,18 +35,21 @@ public class LineRestControllerTest {
     @Autowired
     private WebApplicationContext webApplicationContext;
 
+    @Autowired
+    LineRestController controller;
+
     private MockMvc mockMvc;
 
     @Before
     public void setup() {
-        mockMvc = standaloneSetup(new LineRestController()).build();
+        mockMvc = standaloneSetup(controller).build();
     }
 
     @Test
     public void testUploadFile() throws Exception {
 
-        MockMultipartFile firstFile = new MockMultipartFile("data", "filename.txt", "text/plain", "some xml".getBytes());
-        MockMultipartFile secondFile = new MockMultipartFile("data", "other-file-name.data", "text/plain", "some other type".getBytes());
+        MockMultipartFile firstFile = new MockMultipartFile("file", "filename.txt", "text/plain", "some xml".getBytes());
+        MockMultipartFile secondFile = new MockMultipartFile("file", "other-file-name.data", "text/plain", "some other type".getBytes());
 
         mockMvc.perform(MockMvcRequestBuilders.fileUpload("/rest/multipleSave")
                 .file(firstFile).file(secondFile))

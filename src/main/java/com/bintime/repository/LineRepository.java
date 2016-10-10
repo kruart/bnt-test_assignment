@@ -18,7 +18,7 @@ public interface LineRepository {
      * @param lines
      * @return
      */
-    List<Line> saveLine(String[] lines);
+    List<Line> saveLine(List<String> lines);
 
     /**
      * Returns numbers of lines from store

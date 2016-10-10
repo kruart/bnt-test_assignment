@@ -5,6 +5,7 @@ import com.bintime.repository.LineRepository;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -41,8 +42,8 @@ public class LineRepositoryImplTest {
         assertEquals(3, service.getNumberOfLines());
     }
 
-    private String[] mockPopulate() {
+    private List<String> mockPopulate() {
 
-        return new String[]{"xyz", "xyz", "yyy", "xyz", "yyy", "smile", "xyz"};
+        return Arrays.asList("xyz", "xyz", "yyy", "xyz", "yyy", "smile", "xyz");
     }
 }

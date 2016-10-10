@@ -27,7 +27,11 @@ public class LineRepositoryImpl implements LineRepository {
     }
 
     @Override
-    public List<Line> saveLine(String[] lines) {
+    public List<Line> saveLine(List<String> lines) {
+        if (linesStore.size() != 0) {
+            linesStore.clear();
+        }
+
         for (String newLine : lines) {
 
             Optional<Line> first = linesStore.stream()
