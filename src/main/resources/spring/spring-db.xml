@@ -1,0 +1,61 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <!--Declares support for general annotations such as @Required, @Autowired, @PostConstruct, and so on..
+    Сообщает фреймворку о необходимости учитывать аннотации в компонентах при их связывании-->
+    <context:annotation-config/>
+
+    <!--This parameter indicate Spring's, in which the package (and subpackages, respectively) make search for your annotations.-->
+    <context:component-scan base-package="com.bintime.repository"/>
+
+    <!--These sql scripts will be performed after starting program. It's for testing-->
+    <jdbc:initialize-database data-source="dataSource" enabled="${database.init}">
+        <jdbc:script location="classpath:db/${database.initLocation}"/>
+        <jdbc:script encoding="utf-8" location="classpath:db/${database.populateLocation}"/>
+    </jdbc:initialize-database>
+
+    <context:property-placeholder location="classpath:db/mysql.properties"/>
+
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+          p:driverClassName="${database.driverClassName}"
+          p:url="${database.url}"
+          p:username="${database.username}"
+          p:password="${database.password}"/>
+
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
+          p:dataSource-ref="dataSource"
+          p:packagesToScan="com.bintime.model">
+
+        <property name="jpaPropertyMap">
+            <map>
+                <entry key="#{T(org.hibernate.cfg.AvailableSettings).DIALECT}" value="${hibernate.dialect}"/>
+                <entry key="#{T(org.hibernate.cfg.AvailableSettings).FORMAT_SQL}" value="${hibernate.format_sql}"/>
+                <entry key="#{T(org.hibernate.cfg.AvailableSettings).USE_SQL_COMMENTS}" value="${hibernate.use_sql_comments}"/>
+                <entry key="#{T(org.hibernate.cfg.AvailableSettings).STATEMENT_BATCH_SIZE}" value="${hibernate.jdbc.statement_batch_size}"/>
+                <entry key="#{T(org.hibernate.cfg.AvailableSettings).ORDER_INSERTS}" value="${hibernate.order_inserts}"/>
+                <entry key="#{T(org.hibernate.cfg.AvailableSettings).ORDER_UPDATES}" value="${hibernate.order_updates}"/>
+            </map>
+        </property>
+
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"
+            p:showSql="${jpa.show_sql}"/>
+        </property>
+    </bean>
+
+    <!-- Transaction manager for a single JPA EntityManagerFactory (alternative to JTA) -->
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"
+          p:entityManagerFactory-ref="entityManagerFactory"/>
+
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+
+</beans>

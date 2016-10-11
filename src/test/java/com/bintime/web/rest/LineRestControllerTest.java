@@ -29,7 +29,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standal
 @WebAppConfiguration
 @ContextConfiguration({
         "classpath:spring/spring-mvc.xml",
-        "classpath:spring/spring-context.xml"
+        "classpath:spring/spring-db.xml"
 })
 @RunWith(SpringJUnit4ClassRunner.class)
 public class LineRestControllerTest {
