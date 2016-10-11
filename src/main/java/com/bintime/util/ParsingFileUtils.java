@@ -11,6 +11,8 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ForkJoinPool;
 
 /**
  * Contains utility functions of parsing files
@@ -20,38 +22,49 @@ import java.util.List;
  */
 public class ParsingFileUtils {
     private static final Logger LOGGER = LoggerFactory.getLogger(ParsingFileUtils.class);
+    private static final int NTHD = 3;
 
-    public static List<String> parsing(List<MultipartFile> files) {
-        List<String> lines = Collections.synchronizedList(new ArrayList<>());
-        BufferedReader reader = null;
+    public static List<String> parallelParseFiles(List<MultipartFile> files) {
+        List<String> allLines = Collections.synchronizedList(new ArrayList<>());
+        List<Runnable> tasks = getTasks(files, allLines);   //each file is a one specific task
 
         try {
-            for (MultipartFile file : files) {
-                if (file.getSize() == 0) continue;
+            ForkJoinPool forkJoinPool = new ForkJoinPool(NTHD);
+            forkJoinPool.submit(
+                    () -> tasks.stream().parallel().forEach(Runnable::run)
+            ).get();
+            forkJoinPool.shutdown();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
 
-                byte[] fileBytes = file.getBytes();
+        return allLines;
+    }
 
-                reader = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(fileBytes)));
+    private static List<Runnable> getTasks(List<MultipartFile> files, List<String> allLines) {
+        List<Runnable> gettingTasks = new ArrayList<>();
 
-                String temp = null;
-                while ((temp = reader.readLine()) != null) {
-                    lines.add(temp);
+        for (MultipartFile file : files) {
+            if (file.getSize() == 0) {continue;}
+            gettingTasks.add(() -> parseFile(file, allLines));
+        }
+        return gettingTasks;
+    }
+
+    private static List<String> parseFile(MultipartFile file, List<String> linesFromFile) {
+        LOGGER.info("ParsingFileUtils.parseFile: Thread name: {}, file:{}", Thread.currentThread().getName(), file.getOriginalFilename());
+
+        try(BufferedReader reader = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(file.getBytes())))) {
+            String temp = null;
+
+            while ((temp = reader.readLine()) != null) {
+                if (!temp.isEmpty()) {
+                    linesFromFile.add(temp);
                 }
             }
         } catch (IOException e) {
             LOGGER.error("ParsingFilesUtils.parsing: {}", e);
-        } finally {
-            try {
-                if (reader != null) {
-                    reader.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-
         }
-
-        return lines;
+        return linesFromFile;
     }
 }

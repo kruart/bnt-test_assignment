@@ -40,7 +40,7 @@ public class LineRestController {
     @RequestMapping(value = "/multipleSave", method = RequestMethod.POST)
     public RedirectView uploadFile(@RequestParam(value = "file") List<MultipartFile> files, RedirectAttributes attributes) {
 
-        List<Line> lines = repository.saveLine(ParsingFileUtils.parsing(files));
+        List<Line> lines = repository.saveLine(ParsingFileUtils.parallelParseFiles(files));
 
         attributes.addFlashAttribute("flashAttrs", lines);
 

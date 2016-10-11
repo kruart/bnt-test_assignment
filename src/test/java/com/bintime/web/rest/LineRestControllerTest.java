@@ -14,6 +14,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Arrays;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -47,12 +49,16 @@ public class LineRestControllerTest {
 
     @Test
     public void testUploadFile() throws Exception {
+        byte[] bytes = Files.readAllBytes(Paths.get("test/filetest1.txt"));
 
-        MockMultipartFile firstFile = new MockMultipartFile("file", "filename.txt", "text/plain", "some xml".getBytes());
-        MockMultipartFile secondFile = new MockMultipartFile("file", "other-file-name.data", "text/plain", "some other type".getBytes());
+        MockMultipartFile firstFile = new MockMultipartFile("file", "filename.txt", "text/plain", bytes);
+        MockMultipartFile secondFile = new MockMultipartFile("file", "other-file-name.pdf", "text/plain", bytes);
+        MockMultipartFile thirdFile = new MockMultipartFile("file", "smile.txt", "text/plain", bytes);
+        MockMultipartFile fourthFile = new MockMultipartFile("file", "kote.txt", "text/plain", bytes);
+        MockMultipartFile fifthFile = new MockMultipartFile("file", "data.txt", "text/plain", bytes);
 
         mockMvc.perform(MockMvcRequestBuilders.fileUpload("/rest/multipleSave")
-                .file(firstFile).file(secondFile))
+                .file(firstFile).file(secondFile).file(thirdFile).file(fourthFile).file(fifthFile))
                 .andExpect(flash().attributeCount(1)) //RedirectAttributes
                 .andExpect(status().is(302))
                 .andExpect(redirectedUrl("/rest/result"));
