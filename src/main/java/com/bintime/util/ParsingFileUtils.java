@@ -1,5 +1,6 @@
 package com.bintime.util;
 
+import org.apache.commons.io.Charsets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
@@ -54,7 +55,7 @@ public class ParsingFileUtils {
     private static List<String> parseFile(MultipartFile file, List<String> linesFromFile) {
         LOGGER.info("ParsingFileUtils.parseFile: Thread name: {}, file:{}", Thread.currentThread().getName(), file.getOriginalFilename());
 
-        try(BufferedReader reader = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(file.getBytes())))) {
+        try(BufferedReader reader = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(file.getBytes()), Charsets.UTF_8))) {
             String temp = null;
 
             while ((temp = reader.readLine()) != null) {
