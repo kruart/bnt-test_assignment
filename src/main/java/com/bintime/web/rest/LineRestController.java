@@ -2,6 +2,7 @@ package com.bintime.web.rest;
 
 import com.bintime.model.Line;
 import com.bintime.repository.LineRepository;
+import com.bintime.util.LineUtils;
 import com.bintime.util.ParsingFileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -42,7 +43,7 @@ public class LineRestController {
 
         List<Line> lines = repository.saveLine(ParsingFileUtils.parallelParseFiles(files));
 
-        attributes.addFlashAttribute("flashAttrs", lines);
+        attributes.addFlashAttribute("flashAttrs", LineUtils.transform(lines));
 
         return new RedirectView("/rest/result", true);
     }

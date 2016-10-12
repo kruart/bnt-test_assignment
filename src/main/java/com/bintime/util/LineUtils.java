@@ -1,6 +1,7 @@
 package com.bintime.util;
 
 import com.bintime.model.Line;
+import com.bintime.to.LineDTO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,5 +38,14 @@ public class LineUtils {
         }
 
         return uniqueLines;
+    }
+
+    public static List<LineDTO> transform(List<Line> lines) {
+        List<LineDTO> newLines = new ArrayList<>();
+
+        for (Line line : lines) {
+            newLines.add(new LineDTO(line.getValue(), line.getCount()));
+        }
+        return newLines;
     }
 }
