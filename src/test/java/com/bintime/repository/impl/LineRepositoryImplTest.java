@@ -2,6 +2,7 @@ package com.bintime.repository.impl;
 
 import com.bintime.model.Line;
 import com.bintime.repository.LineRepository;
+import com.bintime.repository.mock.LineRepositoryImpl;
 import org.junit.Before;
 import org.junit.Test;
 

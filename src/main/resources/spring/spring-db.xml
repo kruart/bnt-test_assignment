@@ -14,7 +14,7 @@
     <context:annotation-config/>
 
     <!--This parameter indicate Spring's, in which the package (and subpackages, respectively) make search for your annotations.-->
-    <context:component-scan base-package="com.bintime.repository"/>
+    <context:component-scan base-package="com.bintime.repository.impl"/>
 
     <!--These sql scripts will be performed after starting program. It's for testing-->
     <jdbc:initialize-database data-source="dataSource" enabled="${database.init}">
@@ -39,7 +39,6 @@
                 <entry key="#{T(org.hibernate.cfg.AvailableSettings).DIALECT}" value="${hibernate.dialect}"/>
                 <entry key="#{T(org.hibernate.cfg.AvailableSettings).FORMAT_SQL}" value="${hibernate.format_sql}"/>
                 <entry key="#{T(org.hibernate.cfg.AvailableSettings).USE_SQL_COMMENTS}" value="${hibernate.use_sql_comments}"/>
-                <entry key="#{T(org.hibernate.cfg.AvailableSettings).STATEMENT_BATCH_SIZE}" value="${hibernate.jdbc.statement_batch_size}"/>
                 <entry key="#{T(org.hibernate.cfg.AvailableSettings).ORDER_INSERTS}" value="${hibernate.order_inserts}"/>
                 <entry key="#{T(org.hibernate.cfg.AvailableSettings).ORDER_UPDATES}" value="${hibernate.order_updates}"/>
             </map>

@@ -1,4 +1,4 @@
-package com.bintime.repository.impl;
+package com.bintime.repository.mock;
 
 import com.bintime.model.Line;
 import com.bintime.repository.LineRepository;
@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Default implementation of the {@link LineRepository}
+ * Default mock implementation of the {@link LineRepository}
  *
  * @author Krukovskiy Arthur
  *
