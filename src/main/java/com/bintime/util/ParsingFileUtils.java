@@ -36,7 +36,7 @@ public class ParsingFileUtils {
             ).get();
             forkJoinPool.shutdown();
         } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
+            LOGGER.error("ParsingFilesUtils.parallelParseFiles: {}", e);
         }
 
         return allLines;
@@ -64,7 +64,7 @@ public class ParsingFileUtils {
                 }
             }
         } catch (IOException e) {
-            LOGGER.error("ParsingFilesUtils.parsing: {}", e);
+            LOGGER.error("ParsingFilesUtils.parseFile: {}", e);
         }
         return linesFromFile;
     }
