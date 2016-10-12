@@ -2,12 +2,12 @@ package com.bintime.repository.mock;
 
 import com.bintime.model.Line;
 import com.bintime.repository.LineRepository;
+import com.bintime.util.LineUtils;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Default mock implementation of the {@link LineRepository}
@@ -28,23 +28,7 @@ public class LineRepositoryImpl implements LineRepository {
 
     @Override
     public List<Line> saveLine(List<String> lines) {
-        if (linesStore.size() != 0) {
-            linesStore.clear();
-        }
-
-        for (String newLine : lines) {
-
-            Optional<Line> first = linesStore.stream()
-                    .filter(line -> line.getValue().equals(newLine))
-                    .findFirst();
-
-            if (first.isPresent()) {
-                first.get().setCount(first.get().getCount() + 1);
-            } else {
-                linesStore.add(new Line(newLine));
-            }
-        }
-
+        linesStore = LineUtils.getUniqueLines(lines);
         return linesStore;
     }
 
