@@ -18,7 +18,7 @@
     <spring.version>4.3.1.RELEASE</spring.version>
     <servlet.version>3.0.1</servlet.version>
     <!--orm-->
-    <mysql.version>5.1.40</mysql.version>
+    <mysql.version>5.1.35</mysql.version>
     <hibernate.version>5.2.2.Final</hibernate.version>
     <!--Tools-->
     <jackson-json.version>2.7.5</jackson-json.version>

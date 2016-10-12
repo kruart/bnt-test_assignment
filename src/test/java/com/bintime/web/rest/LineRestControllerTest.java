@@ -49,7 +49,7 @@ public class LineRestControllerTest {
 
     @Test
     public void testUploadFile() throws Exception {
-        byte[] bytes = Files.readAllBytes(Paths.get("test/filetest1.txt"));
+        byte[] bytes = Files.readAllBytes(Paths.get("testdata/testfile1.txt"));
 
         MockMultipartFile firstFile = new MockMultipartFile("file", "filename.txt", "text/plain", bytes);
         MockMultipartFile secondFile = new MockMultipartFile("file", "other-file-name.pdf", "text/plain", bytes);
