@@ -16,13 +16,13 @@ import java.util.List;
  *
  */
 @Repository
-public class LineRepositoryImpl implements LineRepository {
+public class LineMockRepositoryImpl implements LineRepository {
     /**
      * Internal list of lines
      */
     private List<Line> linesStore;
 
-    public LineRepositoryImpl() {
+    public LineMockRepositoryImpl() {
         linesStore = Collections.synchronizedList(new ArrayList<>());
     }
 

@@ -1,10 +1,10 @@
-package com.bintime.repository.impl;
+package com.bintime.repository;
 
 import com.bintime.model.Line;
-import com.bintime.repository.LineRepository;
-import com.bintime.repository.mock.LineRepositoryImpl;
-import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.Arrays;
 import java.util.List;
@@ -12,22 +12,20 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 /**
- * Contain unit-tests for {@link LineRepositoryImpl}
+ * Base class for testing all LineRepository implementations
  *
  * @author Krukovskiy Arthur
  *
  */
-public class LineRepositoryImplTest {
-    private LineRepository service;
+@RunWith(SpringJUnit4ClassRunner.class)
+public abstract class AbstractLineRepositoryTest {
 
-    @Before
-    public void setup() {
-        service = new LineRepositoryImpl();
-    }
+    @Autowired
+    private LineRepository repository;
 
     @Test
     public void testSaveLine() throws Exception {
-        List<Line> linesAfterParsing = service.saveLine(mockPopulate());
+        List<Line> linesAfterParsing = repository.saveLine(mockPopulate());
 
         assertEquals("xyz", linesAfterParsing.get(0).getValue());
         assertEquals(4, linesAfterParsing.get(0).getCount());
@@ -38,13 +36,11 @@ public class LineRepositoryImplTest {
 
     @Test
     public void testGetNumberOfLines() throws Exception {
-        assertEquals(0, service.getNumberOfLines());
-        service.saveLine(mockPopulate());
-        assertEquals(3, service.getNumberOfLines());
+        repository.saveLine(mockPopulate());
+        assertEquals(3, repository.getNumberOfLines());
     }
 
     private List<String> mockPopulate() {
-
         return Arrays.asList("xyz", "xyz", "yyy", "xyz", "yyy", "smile", "xyz");
     }
 }
