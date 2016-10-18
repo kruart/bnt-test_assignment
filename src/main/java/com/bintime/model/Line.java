@@ -30,6 +30,11 @@ public class Line extends BaseEntity{
         this.count = 1;
     }
 
+    public Line(String value, int count) {
+        this.value = value;
+        this.count = count;
+    }
+
     public String getValue() {
         return value;
     }

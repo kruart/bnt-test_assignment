@@ -4,8 +4,10 @@ import com.bintime.model.Line;
 import com.bintime.to.LineDTO;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Contains utility functions for {@link Line} objects
@@ -22,24 +24,24 @@ public class LineUtils {
      * @param lines
      */
     public static List<Line> getUniqueLines(List<String> lines) {
-        List<Line> uniqueLines = new ArrayList<>();
+        Map<String, Integer> countUniqueStrings = new HashMap<>();
 
         for (String newLine : lines) {
-
-            Optional<Line> first = uniqueLines.stream()
-                    .filter(line -> line.getValue().equals(newLine))
-                    .findFirst();
-
-            if (first.isPresent()) {
-                first.get().setCount(first.get().getCount() + 1);
-            } else {
-                uniqueLines.add(new Line(newLine));
-            }
+            countUniqueStrings.merge(newLine, 1, (a, b) -> a + b);
         }
 
-        return uniqueLines;
+        return countUniqueStrings.entrySet()
+                .stream()
+                .map(stringIntegerEntry -> new Line(stringIntegerEntry.getKey(), stringIntegerEntry.getValue()))
+                .collect(Collectors.toList());
     }
 
+    /**
+     * Transform {@link Line} collection to {@link LineDTO} collection
+     *
+     * @param lines
+     * @return
+     */
     public static List<LineDTO> transform(List<Line> lines) {
         List<LineDTO> newLines = new ArrayList<>();
 
