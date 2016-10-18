@@ -42,6 +42,6 @@ public class LineJpaRepositoryImpl implements LineRepository {
 
     @Override
     public List<Line> getLinesByRequestId(int requestId) {
-        return em.createNamedQuery(Line.GET_BY_REQUEST_ID, Line.class).setParameter("requestId", requestId).getResultList();
+        return em.createNamedQuery(Line.GET_LINES_BY_REQUEST_ID, Line.class).setParameter("requestId", requestId).getResultList();
     }
 }

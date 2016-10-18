@@ -9,11 +9,11 @@ import javax.persistence.*;
  * @author Krukovskiy Arthur
  *
  */
-@NamedQuery(name = Line.GET_BY_REQUEST_ID, query = "SELECT m FROM Line m WHERE m.request.id=:requestId")
+@NamedQuery(name = Line.GET_LINES_BY_REQUEST_ID, query = "SELECT m FROM Line m WHERE m.request.id=:requestId")
 @Entity
 @Table(name = "line")
 public class Line extends BaseEntity{
-    public static final String GET_BY_REQUEST_ID = "Line.getByRequestId";
+    public static final String GET_LINES_BY_REQUEST_ID = "Line.getLinesByRequestId";
 
     @Column(name = "value_of_line")
     private String value;
