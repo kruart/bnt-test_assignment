@@ -1,6 +1,7 @@
 package com.bintime.repository.impl;
 
 import com.bintime.model.Line;
+import com.bintime.model.UploadRequest;
 import com.bintime.repository.LineRepository;
 import com.bintime.util.LineUtils;
 import org.springframework.stereotype.Repository;
@@ -8,8 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import java.math.BigInteger;
 import java.util.List;
 
 /**
@@ -27,20 +26,22 @@ public class LineJpaRepositoryImpl implements LineRepository {
 
     @Override
     @Transactional
-    public List<Line> saveLine(List<String> lines) {
+    public Integer saveLine(List<String> lines) {
+
+        UploadRequest req = new UploadRequest();
+        em.persist(req);
 
         List<Line> uniqueLines = LineUtils.getUniqueLines(lines);
 
         for (Line uniqueLine : uniqueLines) {
+            uniqueLine.setRequest(req);
             em.persist(uniqueLine);
         }
-        return uniqueLines;
+        return req.getId();
     }
 
     @Override
-    public int getNumberOfLines() {
-        Query query = em.createNativeQuery("SELECT count(*) FROM line");
-        BigInteger singleResult = (BigInteger) query.getSingleResult();
-        return singleResult.intValue();
+    public List<Line> getLinesByRequestId(int requestId) {
+        return em.createNamedQuery(Line.GET_BY_REQUEST_ID, Line.class).setParameter("requestId", requestId).getResultList();
     }
 }

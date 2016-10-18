@@ -25,19 +25,15 @@ public abstract class AbstractLineRepositoryTest {
 
     @Test
     public void testSaveLine() throws Exception {
-        List<Line> linesAfterParsing = repository.saveLine(mockPopulate());
+        int indexOfRequest = repository.saveLine(mockPopulate());
 
-        assertEquals("xyz", linesAfterParsing.get(0).getValue());
-        assertEquals(4, linesAfterParsing.get(0).getCount());
-
-        assertEquals("yyy", linesAfterParsing.get(1).getValue());
-        assertEquals(2, linesAfterParsing.get(1).getCount());
+        assertEquals(2, indexOfRequest);
     }
 
     @Test
-    public void testGetNumberOfLines() throws Exception {
-        repository.saveLine(mockPopulate());
-        assertEquals(3, repository.getNumberOfLines());
+    public void testGetLinesByRequestId() throws Exception {
+        List<Line> linesByRequestId = repository.getLinesByRequestId(1);
+        assertEquals(2, linesByRequestId.size());
     }
 
     private List<String> mockPopulate() {

@@ -18,12 +18,13 @@ public interface LineRepository {
      * @param lines
      * @return
      */
-    List<Line> saveLine(List<String> lines);
+    Integer saveLine(List<String> lines);
 
     /**
-     * Returns numbers of lines from store
+     * Retrieves Lines from store by request id
      *
+     * @param requestId
      * @return
      */
-    int getNumberOfLines();
+    List<Line> getLinesByRequestId(int requestId);
 }
