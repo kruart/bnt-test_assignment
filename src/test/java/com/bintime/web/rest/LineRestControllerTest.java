@@ -1,6 +1,5 @@
 package com.bintime.web.rest;
 
-import com.bintime.model.Line;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,11 +15,10 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
 /**
@@ -29,7 +27,8 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standal
 @WebAppConfiguration
 @ContextConfiguration({
         "classpath:spring/spring-mvc.xml",
-        "classpath:spring/spring-mock.xml"
+        "classpath:spring/spring-mock.xml",
+        "classpath:spring/spring-context.xml"
 })
 @RunWith(SpringJUnit4ClassRunner.class)
 public class LineRestControllerTest {
@@ -59,19 +58,17 @@ public class LineRestControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.fileUpload("/rest/multipleSave")
                 .file(firstFile).file(secondFile).file(thirdFile).file(fourthFile).file(fifthFile))
-                .andExpect(flash().attributeCount(1)) //RedirectAttributes
                 .andExpect(status().is(302))
-                .andExpect(redirectedUrl("/rest/result"));
+                .andExpect(redirectedUrl("/rest/result/2"));
     }
 
     @Test
     public void resultOfParsing() throws Exception {
         //solution to the problem of "content type not set ==>
         // http://stackoverflow.com/questions/37448548/java-lang-assertionerror-content-type-not-set-even-after-setting-content-type-a"
-        mockMvc.perform(get("/rest/result")
+        mockMvc.perform(get("/rest/result/1")
                 .contentType(MediaType.APPLICATION_JSON)
-                .flashAttr("flashAttrs", Arrays.asList(new Line("open"), new Line("close"))))
-                .andDo(print())
+                .param("id", "1"))
                 .andExpect(status().isOk());
 
     }

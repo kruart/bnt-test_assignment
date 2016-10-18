@@ -10,10 +10,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ForkJoinPool;
 
 /**
  * Contains utility functions of parsing files
@@ -23,26 +20,8 @@ import java.util.concurrent.ForkJoinPool;
  */
 public class ParsingFileUtils {
     private static final Logger LOGGER = LoggerFactory.getLogger(ParsingFileUtils.class);
-    private static final int NTHD = 3;
 
-    public static List<String> parallelParseFiles(List<MultipartFile> files) {
-        List<String> allLines = Collections.synchronizedList(new ArrayList<>());
-        List<Runnable> tasks = getTasks(files, allLines);   //each file is a one specific task
-
-        try {
-            ForkJoinPool forkJoinPool = new ForkJoinPool(NTHD);
-            forkJoinPool.submit(
-                    () -> tasks.stream().parallel().forEach(Runnable::run)
-            ).get();
-            forkJoinPool.shutdown();
-        } catch (InterruptedException | ExecutionException e) {
-            LOGGER.error("ParsingFilesUtils.parallelParseFiles: {}", e);
-        }
-
-        return allLines;
-    }
-
-    private static List<Runnable> getTasks(List<MultipartFile> files, List<String> allLines) {
+    public static List<Runnable> getTasks(List<MultipartFile> files, List<String> allLines) {
         List<Runnable> gettingTasks = new ArrayList<>();
 
         for (MultipartFile file : files) {
@@ -52,7 +31,7 @@ public class ParsingFileUtils {
         return gettingTasks;
     }
 
-    private static List<String> parseFile(MultipartFile file, List<String> linesFromFile) {
+    public static List<String> parseFile(MultipartFile file, List<String> linesFromFile) {
         LOGGER.info("ParsingFileUtils.parseFile: Thread name: {}, file:{}", Thread.currentThread().getName(), file.getOriginalFilename());
 
         try(BufferedReader reader = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(file.getBytes()), Charsets.UTF_8))) {

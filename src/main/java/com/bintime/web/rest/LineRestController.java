@@ -1,18 +1,11 @@
 package com.bintime.web.rest;
 
-import com.bintime.model.Line;
-import com.bintime.repository.LineRepository;
-import com.bintime.util.LineUtils;
-import com.bintime.util.ParsingFileUtils;
+import com.bintime.service.LineService;
+import com.bintime.to.LineDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.List;
@@ -29,33 +22,30 @@ import java.util.List;
 public class LineRestController {
 
     @Autowired
-    private LineRepository repository;
+    private LineService lineService;
 
     /**
      * Uploads multiple files from html-form.
      *
      * @param files
-     * @param attributes
      * @return
      */
     @RequestMapping(value = "/multipleSave", method = RequestMethod.POST)
-    public RedirectView uploadFile(@RequestParam(value = "file") List<MultipartFile> files, RedirectAttributes attributes) {
+    public RedirectView uploadFile(@RequestParam(value = "file") List<MultipartFile> files) {
 
-        List<Line> lines = repository.saveLine(ParsingFileUtils.parallelParseFiles(files));
+        int index = lineService.saveLine(files);
 
-        attributes.addFlashAttribute("flashAttrs", LineUtils.transform(lines));
-
-        return new RedirectView("/rest/result", true);
+        return new RedirectView("/rest/result/" + index);
     }
 
     /**
      * Returns the result of parsing as json
      *
-     * @param model
+     * @param requestId
      * @return
      */
-    @RequestMapping(value = "/result", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Object resultOfParsing(Model model) {
-        return model.asMap().get("flashAttrs");
+    @RequestMapping(value = "/result/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<LineDTO> resultOfParsing(@PathVariable("id") int requestId) {
+        return lineService.getLinesByRequestId(requestId);
     }
 }
