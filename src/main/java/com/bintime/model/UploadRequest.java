@@ -12,4 +12,9 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "uploadrequest")
 public class UploadRequest extends BaseEntity{
+    public UploadRequest() {}
+
+    public UploadRequest(Integer id) {
+        super(id);
+    }
 }
