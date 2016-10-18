@@ -1,5 +1,5 @@
-DROP TABLE IF EXISTS uploadrequest;
 DROP TABLE IF EXISTS line;
+DROP TABLE IF EXISTS uploadrequest;
 
 CREATE TABLE uploadrequest (
   id INT AUTO_INCREMENT PRIMARY KEY
