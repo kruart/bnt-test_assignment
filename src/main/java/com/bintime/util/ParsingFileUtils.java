@@ -9,7 +9,6 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,16 +19,6 @@ import java.util.List;
  */
 public class ParsingFileUtils {
     private static final Logger LOGGER = LoggerFactory.getLogger(ParsingFileUtils.class);
-
-    public static List<Runnable> getTasks(List<MultipartFile> files, List<String> allLines) {
-        List<Runnable> gettingTasks = new ArrayList<>();
-
-        for (MultipartFile file : files) {
-            if (file.getSize() == 0) {continue;}
-            gettingTasks.add(() -> parseFile(file, allLines));
-        }
-        return gettingTasks;
-    }
 
     public static List<String> parseFile(MultipartFile file, List<String> linesFromFile) {
         LOGGER.info("ParsingFileUtils.parseFile: Thread name: {}, file:{}", Thread.currentThread().getName(), file.getOriginalFilename());

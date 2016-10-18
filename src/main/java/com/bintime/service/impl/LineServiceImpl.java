@@ -46,7 +46,7 @@ public class LineServiceImpl implements LineService {
             }
 //            taskExecutor.shutdown();
         } catch (InterruptedException | ExecutionException e) {
-            LOGGER.error("ParsingFilesUtils.parallelParseFiles: {}", e);
+            LOGGER.error("LineServiceImpl.saveLine: {}", e);
         }
         return repository.saveLine(allLines);
     }
