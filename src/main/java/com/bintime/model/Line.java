@@ -1,8 +1,6 @@
 package com.bintime.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * Contains value of the line/string and the number of occurrences
@@ -21,6 +19,10 @@ public class Line extends BaseEntity{
     @Column(name = "counter")
     private int count;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "request_id")
+    private UploadRequest request;
+
     public Line() {
         this.count = 1;
     }
@@ -30,9 +32,10 @@ public class Line extends BaseEntity{
         this.count = 1;
     }
 
-    public Line(String value, int count) {
+    public Line(String value, int count, UploadRequest request) {
         this.value = value;
         this.count = count;
+        this.request = request;
     }
 
     public String getValue() {
