@@ -1,0 +1,19 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!--Declares support for general annotations such as @Required, @Autowired, @PostConstruct, and so on..
+    Сообщает фреймворку о необходимости учитывать аннотации в компонентах при их связывании-->
+    <context:annotation-config/>
+
+    <!--This parameter indicate Spring's, in which the package (and subpackages, respectively) make search for your annotations.-->
+    <context:component-scan base-package="com.bintime.service"/>
+
+    <bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+        <property name="corePoolSize" value="3" />
+        <property name="queueCapacity" value="25" />
+    </bean>
+
+</beans>
